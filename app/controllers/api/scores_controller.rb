@@ -5,7 +5,7 @@ module Api
     before_action :validate_score_user_id, only: :destroy
 
     def user_feed
-      #users should be loaded with scores
+      # users should be loaded with scores
       scores = Score.all.includes(:user).order(played_at: :desc, id: :desc)
       serialized_scores = scores.map(&:serialize)
 
