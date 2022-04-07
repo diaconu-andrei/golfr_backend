@@ -26,5 +26,25 @@ module Api
         }
       }.to_json
     end
+
+    def show
+      user = User.find_by(id: params[:id])
+
+      if user.nil?
+        render json: {
+          errors: [
+            'Golfer with this id was not found'
+          ]
+        }, status: :not_found
+      else
+        render json: {
+          user: {
+            id: user.id,
+            name: user.name,
+            scores: user.scores.map(&:serialize)
+          }
+        }.to_json
+      end
+    end
   end
 end
