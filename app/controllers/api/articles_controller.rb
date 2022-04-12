@@ -4,8 +4,8 @@ module Api
     before_action :logged_in!
     before_action :check_user, only: :create
 
-    def user_articles
-      user = User.find_by(id: params[:id])
+    def index
+      user = User.find_by(id: params[:user_id])
 
       if user.nil?
         render json: {
@@ -40,7 +40,7 @@ module Api
     end
 
     def show
-      user = User.find_by(id: params[:id])
+      user = User.find_by(id: params[:user_id])
 
       if user.nil?
         render json: {
@@ -49,7 +49,7 @@ module Api
           ]
         }, status: :not_found
       else
-        article = Article.find_by(id: params[:post_id], user_id: user.id)
+        article = Article.find_by(id: params[:id], user_id: user.id)
         if article.nil?
           render json: {
             errors: [
@@ -71,7 +71,7 @@ module Api
     end
 
     def check_user
-      @user = User.find(params[:id])
+      @user = User.find(params[:user_id])
 
       return if current_user == @user
 
